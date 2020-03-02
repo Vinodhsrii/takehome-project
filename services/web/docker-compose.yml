@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - "db"
+    command: ["python", "./project/app.py"]
+    
+    env_file:
+      - ./project/.env.dev
+  # db:
+  #   image: postgres
+
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=admin
+      - POSTGRESQL_DATABASE=groundspeed_devops
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+volumes:
+  postgres_data:
+
+# services:
+#   web:
+#     build: .
+#     command: python app.py run -h 0.0.0.0
+#     volumes:
+#       - ./services/web/:/usr/src/app/
+#     ports:
+#       - 5000:5000
+#     env_file:
+#       - ./project/.env.dev
+#     depends_on:
+#       - db
+#   db:
+#     image: postgres:12-alpine
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data/
+#     environment:
+#       - POSTGRESQL_USERNAME=postgres
+#       - POSTGRESQL_PASSWORD=admin
+#       - POSTGRESQL_DATABASE=groundspeed_devops
+
+# volumes:
+#   postgres_data:
